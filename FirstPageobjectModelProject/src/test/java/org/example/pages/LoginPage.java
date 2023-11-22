@@ -29,10 +29,9 @@ public class LoginPage {
         test.fail("<p style=\"color:#FF5353; font-size:13px\"><b>"+message+"</b></p>");
         Throwable t = new InterruptedException("Exception");
         test.fail(t);
-        GetScreenshot GetScreenShot = null;
         @SuppressWarnings("unused")
-        String screenShotPath = GetScreenshot.capture(PageDriver.getCurrentDriver(), "+scName+");
-        String dest = System.getProperty("user.dir") + "\\screenshots\\" + " "+scName+".png";
+        String screenShotPath = GetScreenshot.capture(PageDriver.getCurrentDriver(), ""+scName+"");
+		String dest = System.getProperty("user.dir") + "\\screenshots\\" + ""+scName+".png";
         test.fail(MediaEntityBuilder.createScreenCaptureFromPath(dest).build());
         Assert.assertTrue(username.isDisplayed());
         PageDriver.getCurrentDriver().quit();
@@ -42,10 +41,11 @@ public class LoginPage {
         test.pass("<p style=\"color:#FF5353; font-size:13px\"><b>"+message+"</b></p>");
     }
 
-    public void passCaseWithSC(String message, String scName) throws IOException {
+    @SuppressWarnings("unused")
+	public void passCaseWithSC(String message, String scName) throws IOException {
         test.pass("<p style=\"color:#FF5353; font-size:13px\"><b>"+message+"</b></p>");
-        String screenShotPath = GetScreenshot.capture(PageDriver.getCurrentDriver(), "+scName+");
-        String dest = System.getProperty("user.dir") + "\\screenshots\\" + " "+scName+".png";
+        String screenShotPath = GetScreenshot.capture(PageDriver.getCurrentDriver(), ""+scName+"");
+		String dest = System.getProperty("user.dir") + "\\screenshots\\" + ""+scName+".png";
         test.pass(MediaEntityBuilder.createScreenCaptureFromPath(dest).build());
     }
 
