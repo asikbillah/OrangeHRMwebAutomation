@@ -2,6 +2,7 @@ package org.example.pages;
 
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.MediaEntityBuilder;
+import org.example.baseDriver.BaseDriver;
 import org.example.baseDriver.PageDriver;
 import org.example.utilitis.GetScreenshot;
 import org.openqa.selenium.WebElement;
@@ -11,7 +12,7 @@ import org.testng.Assert;
 
 import java.io.IOException;
 
-public class LoginPage {
+public class LoginPage extends BaseDriver {
     ExtentTest test;
      public LoginPage(ExtentTest test){
          PageFactory.initElements(PageDriver.getCurrentDriver(),this);
@@ -21,8 +22,7 @@ public class LoginPage {
     WebElement username;
     @FindBy(xpath = "//input[@placeholder='Password']")
      WebElement password;
-
-    @FindBy(xpath = "//button[normalize-space()='Login']")
+    @FindBy(xpath = "//button[@type='submit']")
     WebElement loginButton;
 
     public void failCase(String message, String scName) throws IOException {
@@ -31,7 +31,7 @@ public class LoginPage {
         test.fail(t);
         @SuppressWarnings("unused")
         String screenShotPath = GetScreenshot.capture(PageDriver.getCurrentDriver(), ""+scName+"");
-		String dest = System.getProperty("user.dir") + "\\screenshots\\" + ""+scName+".png";
+        String dest = System.getProperty("user.dir") + "/screenshots/" + ""+scName+".png";
         test.fail(MediaEntityBuilder.createScreenCaptureFromPath(dest).build());
         Assert.assertTrue(username.isDisplayed());
         PageDriver.getCurrentDriver().quit();
@@ -42,10 +42,10 @@ public class LoginPage {
     }
 
     @SuppressWarnings("unused")
-	public void passCaseWithSC(String message, String scName) throws IOException {
+    public void passCaseWithSC(String message, String scName) throws IOException {
         test.pass("<p style=\"color:#FF5353; font-size:13px\"><b>"+message+"</b></p>");
         String screenShotPath = GetScreenshot.capture(PageDriver.getCurrentDriver(), ""+scName+"");
-		String dest = System.getProperty("user.dir") + "\\screenshots\\" + ""+scName+".png";
+        String dest = System.getProperty("user.dir") + "/screenshots/" + ""+scName+".png";
         test.pass(MediaEntityBuilder.createScreenCaptureFromPath(dest).build());
     }
 
@@ -54,19 +54,21 @@ public class LoginPage {
             test.info("Please Enter username");
             if(username.isDisplayed()) {
                 username.sendKeys("Admin");
-                passCase("username entered");
+                Thread.sleep(5000);
+                passCaseWithSC("username entered","usernamepass");
 
                 try {
                     test.info("Please Enter password");
                     if(password.isDisplayed()) {
                         password.sendKeys("admin123");
-                        passCase("password send");
+                        Thread.sleep(5000);
+                        passCaseWithSC("password send","passwordpass");
 
                         try {
                             test.info("Click on the LogIn Button");
                             if(loginButton.isDisplayed()) {
                                 loginButton.click();
-                                Thread.sleep(8000);
+                                Thread.sleep(5000);
                                 passCaseWithSC("Login Successful","loginpass");
                             }
                         } catch (Exception e) {
@@ -80,7 +82,6 @@ public class LoginPage {
         } catch (Exception e) {
             failCase("Username was not locatable", "username fail");
         }
-
 
     }
 

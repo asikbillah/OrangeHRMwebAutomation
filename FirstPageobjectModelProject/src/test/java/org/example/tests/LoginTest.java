@@ -32,7 +32,7 @@ public class LoginTest extends BaseDriver {
         loginPage.login();
     }
     @AfterClass
-    public void close(){
+    public void report(){
         report.flush();
     }
 }
